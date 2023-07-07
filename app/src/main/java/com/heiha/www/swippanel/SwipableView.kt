@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat.NestedScrollType
 import androidx.core.view.ViewCompat.ScrollAxis
 import androidx.core.view.ViewCompat.TYPE_TOUCH
 
-class NestedScrollBridgeView @JvmOverloads constructor(
+class SwipableView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
