@@ -439,29 +439,34 @@ class SwipableView @JvmOverloads constructor(
         return clampedY
     }
 
-    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        initInterceptVelocityTrackerIfNotExists()
 
         when (ev.action) {
             MotionEvent.ACTION_DOWN -> {
-                recycleInterceptVelocityTracker()
+                interceptVelocityTracker?.clear()
                 interceptPointerId = ev.getPointerId(0)
             }
-            MotionEvent.ACTION_POINTER_DOWN -> {
-                interceptPointerId = ev.getPointerId(ev.actionIndex)
-            }
+            MotionEvent.ACTION_POINTER_DOWN -> interceptPointerId = ev.getPointerId(ev.actionIndex)
             MotionEvent.ACTION_UP -> {
             }
             MotionEvent.ACTION_POINTER_UP -> {
-                interceptPointerId = ev.getPointerId(if (ev.actionIndex == 0) 1 else 0)
-            }
-            MotionEvent.ACTION_CANCEL -> {
+                val pointerIndex = ev.actionIndex
+                val pointerId = ev.getPointerId(pointerIndex)
+                if (pointerId == interceptPointerId) {
+                    interceptPointerId =
+                        ev.getPointerId(if (ev.actionIndex == 0) 1 else 0)
+                    interceptVelocityTracker?.clear()
+                }
 
+            }
+
+            MotionEvent.ACTION_CANCEL -> {
             }
         }
 
-        initInterceptVelocityTrackerIfNotExists()
         interceptVelocityTracker?.addMovement(ev)
-        return super.onInterceptTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
     }
 
 
