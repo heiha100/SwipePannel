@@ -11,11 +11,11 @@
 
 dismiss by clicking background
 
-<video src="res/show_dismiss.mp4"></video>
+![show_dismiss](res/show_dismiss.gif)
 
 ### 多Pager的嵌套滚动
 
-<video src="res/nested_scroll.mp4"></video>
+![nested_scroll](res/nested_scroll.gif)
 
 ## 使用
 
