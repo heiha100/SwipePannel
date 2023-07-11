@@ -1,11 +1,13 @@
 package com.heiha.www.swippanel
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -28,33 +30,47 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val swipePanel = SwipePanel(this)
         val contentView = LayoutInflater.from(this).inflate(R.layout.panel_content_view, null)
-        swipePanel.contentView = contentView
-        swipePanel.show()
-
-
-//        val container = findViewById<View>(R.id.panel_container)
-//        val lp = container.layoutParams as FrameLayout.LayoutParams
-//        val behavior = lp.behavior as SwipeBehavior
-//        behavior.draggableView = contentView
-
+        val swipePanel = SwipePanel(this, contentView)
         val viewPager = contentView.findViewById<ViewPager2>(R.id.view_pager)
         viewPager.adapter = ViewPagerAdapter()
 
+        findViewById<View>(R.id.poke).setOnClickListener {
+            swipePanel.show()
+        }
     }
 }
 
 private class ViewPagerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    private val pager = itemView.findViewById<View>(R.id.pager)
+    private val tv = itemView.findViewById<TextView>(R.id.tv)
+    private val text = "Hello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\nHello World!\n"
 
+
+    fun bind(item: Int) {
+        pager.setBackgroundColor(when (item) {
+            0 ->  Color.parseColor("#434FA4")
+            1 ->  Color.parseColor("#CA5847")
+            2 -> Color.parseColor("#03DAC6")
+            else -> Color.parseColor("#FFFFFF")
+        })
+
+        tv.text = when (item) {
+            0 -> text.replace("Hello World!", "👋 Pager-----------1")
+            1 -> text.replace("Hello World!", "😊 Pager-----------2")
+            2 -> text.replace("Hello World!", "💡 Pager-----------3")
+            else -> null
+        }
+    }
 }
 
-private class ViewPagerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+private class ViewPagerAdapter: RecyclerView.Adapter<ViewPagerViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         return ViewPagerViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.pager_content_view, parent, false))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
+        holder.bind(position)
     }
 
     override fun getItemCount(): Int = 3
